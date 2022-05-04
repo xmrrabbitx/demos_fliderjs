@@ -1,50 +1,4 @@
-
-/* Classes  */
-
-
-/* Error Handling Class */
-function errHdl(){};
-
-/* Error Handling Empty Method */
-errHdl.prototype.empty = function(e){
-       
-    for(x=0;x<Object.keys(e).length;x++){
-        
-        if(e[Object.keys(e)[x]] === "" || e[Object.keys(e)[x]] === undefined){
-
-
-            var notification = new Notification(Object.keys(e)[x] + " is emptyyyy ");
-
-            return true;
-
-        }
-    }
-
-};
-
-/* Error Handling Freez Method */
-errHdl.prototype.Freez = function(e){
-   
-
-    $("#slider").css("opacity","0.3");
-    
-    $("#slider").click(function(){
-    
-        $("#arrow-left").prop("disabled", true);
-        $("#arrow-right").prop("disabled", true);
-        
-        err.empty(e);
-
-    });
-   
-
-
-}
-
-/* create Object of error handling */
-var err = new errHdl();
-
-
+import {error} from "./modules/error_handling/errhndl.js"
 
 
 /* Event handling function*/
@@ -285,7 +239,7 @@ styleCss.prototype.Css = function(optional,parentElementId){
 
         if(optional['css'] !== null && optional['css'] !== "" && optional['css'] !== undefined){
 
-            for(x=0;x<Object.keys(optionalCss).length;x++){
+            for(let x=0;x<Object.keys(optionalCss).length;x++){
 
                 
                 $("#" + parentElementId + "-" + Object.keys(optionalCss)[x]).css(optionalCss[Object.keys(optionalCss)[x]]);
@@ -355,11 +309,10 @@ styleCss.prototype.Arrows = function(optional,id){
 
 
 
-
 /* Main Variables */
 function variables(e){
 
-    this.var = { container:{ id:e['id'] ?? null,area:e['area'] ?? null },pics:e['pics'] ?? null, src_pics:e['src_pics'] ?? null,
+    this.var = {id:e['id'] ?? null, area:e['area'] ?? null, pics:e['pics'] ?? null, src_pics:e['src_pics'] ?? null,
                 duration:e['duration'] ?? null,infinite:e['infinite'] ?? true ,slideToshow:e['slideToshow'] ?? 1,
                 auto:e['auto'] ?? null,autoDelay:e['auto_delay'] ?? null,autoDuration:e['auto_duration'] ?? null,
                 autoDirection:e['auto_direction'] ?? "right",
@@ -368,10 +321,11 @@ function variables(e){
 
         };
 
+  
         // Check Empty Options
-        if(err.empty(this.var)){
+        if(error.empty(this.var)){
 
-            err.Freez(this.var);
+            error.freez(this.var);
 
         }
         
@@ -385,10 +339,10 @@ variables.prototype.containerCreate = function(){
 
 
     /* main variable for container */
-	var parentElementId = this.var['container']['id'];
+	var parentElementId = this.var['id'];
 	var parentElement = document.getElementById(parentElementId);
 
-    var area = this.var['container']['area'];
+    var area = this.var['area'];
 
     /* create element */
 	this.containerBlock = document.createElement("div");
@@ -398,6 +352,7 @@ variables.prototype.containerCreate = function(){
 	this.containerBlock.style.display = "";
 	parentElement.appendChild(this.containerBlock);
 
+    console.log("container");
 
     
 
@@ -436,7 +391,7 @@ variables.prototype.containerCreate = function(){
 /* Create Slide Trails */
 variables.prototype.slideTrailsCreate =  function(){
 
-    var parentElementId = this.var['container']['id'];
+    var parentElementId = this.var['id'];
     var parentElement = document.getElementById(parentElementId);
     
     let Pics = this.var['pics'];
@@ -499,11 +454,11 @@ variables.prototype.slideTrailsCreate =  function(){
 /* dimension of our trails */
 variables.prototype.slideTrailsDimensions = function(){
     
-    var area = this.var['container']['area'];
+    var area = this.var['area'];
     let slideToshow = this.var['slideToshow'];
     let infinite =  this.var['infinite'];
     let Pics = this.var['pics'];
-    var parentElementId = this.var['container']['id'];   
+    var parentElementId = this.var['id'];   
     var parentElement = document.getElementById(parentElementId);
 
 
@@ -597,16 +552,16 @@ variables.prototype.slideTrailsHndl = function(){
 
 
        var styleObject = new styleCss();
-       styleObject.Css(this.var['optional'],this.var['container']['id']);
-       styleObject.Arrows(this.var['optional'],this.var['container']['id']);
-       var parentElementId = this.var['container']['id'];
+       styleObject.Css(this.var['optional'],this.var['id']);
+       styleObject.Arrows(this.var['optional'],this.var['id']);
+       var parentElementId = this.var['id'];
        var slideWidth = $('#' + parentElementId + '-container').width() ; 
         
        
         let eHndler = new eventHndl();
         eHndler.Handler({
            
-            id:this.var['container']['id'],
+            id:this.var['id'],
             auto: this.var["auto"],
             autoDelay: this.var["autoDelay"],
             autoDuration: this.var["autoDuration"],
@@ -621,7 +576,7 @@ variables.prototype.slideTrailsHndl = function(){
 }
 
 
-function fliderjs(e){
+export function fliderjs(e){
 
     let Slider = new variables(e);
     Slider.containerCreate();
