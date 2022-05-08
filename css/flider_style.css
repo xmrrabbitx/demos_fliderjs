@@ -14,7 +14,7 @@
   overflow: clip;
   margin: 0px auto 0 auto;
   opacity:1;
-  
+
 }
 
 .flider_container ul {
@@ -61,4 +61,13 @@
 .arrows-:hover {
   opacity: 1;
   transition: all 0.2s ease;
+}
+
+
+.fliderjs_dots_circles{
+
+  display: inline-block;
+  background-color: #a9a9a9;
+  opacity: 0.7;
+
 }

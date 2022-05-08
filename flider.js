@@ -1,322 +1,19 @@
 import {error} from "./modules/error_handling/errhndl.js"
+import {styleCss} from "./modules/style/style.js"
+import {eventHndl} from "./modules/event_handling/event_hndl.js"
+import { dots } from "./modules/dots_handling/dots.js";
 
-
-/* Event handling function*/
-function eventHndl(){};
-
-eventHndl.prototype.Handler = function(p){
-    var parentElementId = p['id'];
-    var slideWidth = p['slidewidth'];
-    var slideToshow = p['slideToshow'];
-    var slideCount =  $('#' + parentElementId +'-container ul li').length;
-    var sliderUlWidth = slideCount * (slideWidth / slideToshow);
-    var mode = p['mode'];
-    var auto = p['auto'];
-    var Duration = p['duration'];
-    var autoDirection = p['autoDirection'];
-    var autoDelay = p['autoDelay'];
-    var autoDuration = p['autoDuration'];
-    var picslen = p["pics"].length;
-
-
-    if(auto === null || auto  === false){
-        auto = false;
-    }else if (auto == true){
-        auto = true;
-    }else if (auto === "reverse"){
-        auto = "reverse";
-    }else{
-        auto = false;
-    }
-    
-
-    
-    var st = {};
-    st[parentElementId] = parentElementId;
-    
-
-                var c = 0;
-                                            
-                const arrows = document.querySelectorAll(".arrows-");
-               
-                // click event  
-                function ClickEvent(){
-                  
-                    
-                                    $("#" + parentElementId + "-arrow-right").click(function(){
-
-                                        var arrowid = this.id.split("-")[2];
-                                        var id = this.id.split("-")[0];
-
-                                        $('#' + this.id).attr("disabled", true);
-                                        
-                                            if(c < (3)){
-                                            
-                                                c = c + 1;
-                                                
-                                                
-                                            }else if(mode === true){
-                                                
-                                                
-
-                                            }else{
-                                                return;
-                                            }
-                                        
-                                        
-                                            click(id,arrowid);
-                                    });
-
-                                    $("#" + parentElementId + "-arrow-left").click(function(){
-
-                                        $('#' + this.id).attr("disabled", true);
-
-                                        var arrowid = this.id.split("-")[2];
-                                        var id = this.id.split("-")[0];
-                                    
-                                        if(c > 0 && c <= 3){
-                                        c = c - 1;
-                                    
-                                        }else if(mode === true){
-                                                
-
-                                        }else{
-                                        
-                                            return;
-                                        }
-                                        
-                                    
-                                        click(id,arrowid);
-
-                                });
-                          
-                                function click(id,arrowid){
-
-                                 
-
-                                   
-                                   
-                                        auto = false;
-
-                                        var clickMode = true;
-                                        
-
-                                        
-                                     
-
-                           
-                                        clearInterval(st[parentElementId]);
-                                       
-                                       
-
-                                        let duration = Duration;
-
-                                        AnimateEvent(parentElementId,arrowid,auto,clickMode,duration);
-                                        Auto();
-                                }
-                                
-                                
-
-                };
-                
-                ClickEvent();
-               
-                
-                
-
-                // Auto Event
-                
-
-
-
-                // Animate Event
-                function AnimateEvent(parentElementId,arrowId,auto,clickMode,duration){
-                    
-               
-              
-                    var anim = {
-                                false:{ 
-                                    true:{"left":{left:- ((slideWidth/slideToshow) + (slideWidth/slideToshow))},"right":{left:0}},
-                                    false:{"left":{right: ( ((slideWidth/slideToshow) * (picslen - c)) - slideWidth) },"right":{right: ( ((slideWidth/slideToshow) * (picslen - c)) - slideWidth)}}
-                                },
-                                true:{true:{"left":{left:- ((slideWidth/slideToshow) + (slideWidth/slideToshow))},"right":{left:0}}},
-                                "reverse":{"right":(((slideWidth/slideToshow) * (picslen - c)) - slideWidth) },"right":{right: ( ((slideWidth/slideToshow) * (picslen - c)) - slideWidth)}
-                                
-
-
-                        };
-                       
-                       
-                    
-                        $('#' + parentElementId +'-container ul').animate(anim[auto][mode][arrowId],duration,function(){
-
-
-                        if(mode !== true){
-
-                       
-                            
-                        }else{
-                            
-                     
-                            
-
-                            if(arrowId  === "right"){
-
-                                $('#' + parentElementId +'-container ul li:last-child').prependTo('#' + parentElementId +'-container ul');
-
-                                $('#' + parentElementId +'-container ul').css('left', - (slideWidth/slideToshow) );
-
-                                $('#' + parentElementId +  "-arrow-"  + arrowId).attr("disabled", false);
-                                
-                               
-                          
-                                
-                                
-                            
-                            }else if(arrowId  === "left"){
-
-                         
-
-                                $('#' + parentElementId +'-container ul li:first-child').appendTo('#' + parentElementId +'-container ul');
-                               
-                              
-                                $('#' + parentElementId +'-container ul').css('left', - (slideWidth/slideToshow) );
-
-
-                                $('#' + parentElementId +  "-arrow-"  + arrowId).attr("disabled", false);
-                                
-                           
-                                
-                            }
-                                 
-                        
-                        }
-
-                  
-                     if(clickMode === true){
-                       
-                    
-                     }
-
-                    });
-                }
-
-            function Auto(){
-               
-                    st[parentElementId] =   setInterval(() => {
-                 
-                        AnimateEvent(parentElementId,autoDirection,auto,false,Duration);
-
-                          },5000);
-                         
-                
-            }
-          
-            if(auto === true && mode === true){
-
-                Auto();
-            }
-          
-
-
-
-
-
-
-}
-
-
-
-/*  css styles   */
-
-function styleCss (){};
-
-// main styles
-styleCss.prototype.Css = function(optional,parentElementId){
-
-    if(optional !== null){
-        let optionalCss = optional['css'];
-
-        if(optional['css'] !== null && optional['css'] !== "" && optional['css'] !== undefined){
-
-            for(let x=0;x<Object.keys(optionalCss).length;x++){
-
-                
-                $("#" + parentElementId + "-" + Object.keys(optionalCss)[x]).css(optionalCss[Object.keys(optionalCss)[x]]);
-                
-            
-                }
-
-        }
-    }
-
-}
-
-
-// arrows styles modes
-styleCss.prototype.Arrows = function(optional,id){
-
-    var parentElementId = id;
-    if(optional !== null){
-        
-            if(optional['arrows'] === false){
-                $('#' + parentElementId +  '-arrow-right').css("display","none");
-                $('#' + parentElementId + '-arrow-left').css("display","none");
-
-            } else if (optional['arrows']  === "hover"){
-
-                $('#' + parentElementId +  '-arrow-right').css("display","none");
-                $('#' + parentElementId + '-arrow-left').css("display","none");
-
-                $('#' + parentElementId +'-container').on("mouseover",fadeIn).on("mouseenter",fadeIn).on("click",fadeIn).on("mouseleave", fadeOut);
-                
-
-
-            } else if (optional['arrows']  === "pale"){
-
-                $('#' + parentElementId +  '-arrow-right').css("opacity",0.5);
-                $('#' + parentElementId + '-arrow-left').css("opacity",0.5);
-                $('#' + parentElementId +'-container').on("mouseover",paleOn).on("mouseenter",paleOn).on("click",paleOn).on("mouseleave", paleOff);
-
-            }
-
-            function fadeIn(){
-                $('#' + parentElementId +  '-arrow-right').fadeIn(500)
-                $('#' + parentElementId + '-arrow-left').fadeIn(500)
-
-            }
-        function fadeOut(){
-            $('#' + parentElementId +  '-arrow-right').fadeOut(500)
-            $('#' + parentElementId + '-arrow-left').fadeOut(500)
-        }
-        function paleOn(){
-
-            $('#' + parentElementId +  '-arrow-right').css("opacity",1);
-            $('#' + parentElementId + '-arrow-left').css("opacity",1);
-
-        }
-        function paleOff(){
-
-            $('#' + parentElementId +  '-arrow-right').css("opacity",0.5);
-            $('#' + parentElementId + '-arrow-left').css("opacity",0.5);
-
-        }
-
-    }
-
-
-}
 
 
 
 /* Main Variables */
-function variables(e){
+export function variables(e){
 
     this.var = {id:e['id'] ?? null, area:e['area'] ?? null, pics:e['pics'] ?? null, src_pics:e['src_pics'] ?? null,
                 duration:e['duration'] ?? null,infinite:e['infinite'] ?? true ,slideToshow:e['slideToshow'] ?? 1,
                 auto:e['auto'] ?? null,autoDelay:e['auto_delay'] ?? null,autoDuration:e['auto_duration'] ?? null,
                 autoDirection:e['auto_direction'] ?? "right",
-                optional:e['optional'] ?? null
+                optional:e['optional'] ?? null,dots:e['dots'] ?? null
 
 
         };
@@ -352,7 +49,7 @@ variables.prototype.containerCreate = function(){
 	this.containerBlock.style.display = "";
 	parentElement.appendChild(this.containerBlock);
 
-    console.log("container");
+  
 
     
 
@@ -422,7 +119,7 @@ variables.prototype.slideTrailsCreate =  function(){
     
     /* Create Pictures Elements */    
     for(var i=0; i < Pics.length; i++){
-
+    
         this.picLi = document.createElement("li");
 
         this.pic = document.createElement("img");
@@ -434,6 +131,7 @@ variables.prototype.slideTrailsCreate =  function(){
         this.picLi.appendChild(this.pic);
         this.picUl.appendChild(this.picLi);
 
+       
         
     }
 
@@ -499,7 +197,8 @@ variables.prototype.slideTrailsDimensions = function(){
     
             if(area === "full"){
 
-                    slidewidth = $('#' + parentElementId).width();
+               
+                    slideWidth = $('#' + parentElementId).width();
 
                     $('#' + parentElementId + '-container').css("width",$('#' + parentElementId).width());
 
@@ -508,6 +207,7 @@ variables.prototype.slideTrailsDimensions = function(){
             // in ZoomIn State
             else if(slideWidth > $('#' + parentElementId).width()){
 
+             
                     slideWidth = $('#' + parentElementId).width();
                     $('#' + parentElementId + '-container').css("width",$('#' + parentElementId).width());
 
@@ -550,10 +250,17 @@ variables.prototype.slideTrailsDimensions = function(){
 /* Slide Trail Handle: all variable pass through this method */
 variables.prototype.slideTrailsHndl = function(){
 
-
+    if(this.var['optional'] !== null){
        var styleObject = new styleCss();
        styleObject.Css(this.var['optional'],this.var['id']);
        styleObject.Arrows(this.var['optional'],this.var['id']);
+
+    }
+     if(this.var['dots'] !== null){
+      
+       var dotObject = new dots();
+       dotObject.create(this.var);
+    }
        var parentElementId = this.var['id'];
        var slideWidth = $('#' + parentElementId + '-container').width() ; 
         
@@ -573,7 +280,10 @@ variables.prototype.slideTrailsHndl = function(){
             pics:this.var['pics']
 
                         });
+
+
 }
+
 
 
 export function fliderjs(e){
