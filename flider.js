@@ -109,7 +109,7 @@ variables.prototype.create = function(){
 }
 
 
-/* Slide Trail Handle: all variable pass through this method */
+/*  Slide Trail Handle: all variable pass through this method */
 variables.prototype.handler = function(){
 
     var slideWidth = $('#' + this.var['id'] + '-container').width() ; 
